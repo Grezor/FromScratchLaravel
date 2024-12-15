@@ -1,0 +1,50 @@
+services:
+  php:
+    image: lara-php:latest
+    container_name: laraphp
+    build:
+      context: ./docker/php
+    volumes:
+      - ./:/var/www/html/
+    networks:
+      - app_network
+    ports:
+      - "9000:80"
+
+  db:
+    image: lara-mysql:latest
+    container_name: laradb
+    build:
+      context: ./docker/mysql
+    command: --mysql-native-password=ON
+    environment:
+      MYSQL_ROOT_PASSWORD: noPassword
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    networks:
+      - app_network
+
+  phpmyadmin:
+    platform: linux/arm64/v8
+    image: phpmyadmin:latest
+    container_name: larapma
+    restart: always
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: noPassword
+      PMA_ARBITRARY: 1
+    ports:
+      - "8080:80"
+    networks:
+      - app_network
+  
+
+volumes:
+  db-data:
+
+networks:
+  app_network:
