@@ -2,6 +2,8 @@
 
 Ce projet propose une structure de départ robuste et modulable pour vos applications, entièrement configurée avec Docker.  
 
+> [!WARNING]  
+> Mon projet fonctionne pour des images platform: linux/arm64/v8
 
 ## Fonctionnalités principales
 
@@ -10,7 +12,8 @@ Le fichier `docker-compose.yml` configure les services suivants :
 
 - **MySQL (lara-mysql)** : Conteneur pour la base de données, avec un mot de passe root par défaut (`noPassword`), un volume persistant pour les données, et accessible sur le port `3307`.  
 
-- **phpMyAdmin (lara-pma)** : Une interface web simple pour gérer la base de données, disponible via le port `8080`.  
+- **phpMyAdmin (lara-pma)** : Une interface web simple pour gérer la base de données, disponible via le port `8080`.  Attention platform: linux/arm64/v8
+
 - **Réseau Docker** : Tous les conteneurs communiquent via un réseau dédié appelé `app_network`.  
 
 
@@ -37,3 +40,7 @@ DB_PASSWORD=noPassword
 
 Un **Makefile** permet d’automatiser et de simplifier l’exécution de commandes dans votre projet Docker.  
 Grâce au Makefile, vous pouvez remplacer des commandes longues et complexes par des raccourcis simples.
+
+
+## Droits 
+ajouter les droits pour le dossier : `chmod +x bin/artisan`
