@@ -11,6 +11,9 @@ RUN apt update -y \
 
 RUN pecl install xdebug apcu
 
+# Activer le module rewrite d'Apache
+RUN a2enmod rewrite
+
 RUN docker-php-ext-install zip pdo pgsql pdo_mysql pdo_pgsql opcache intl \
     && docker-php-ext-enable xdebug apcu
 

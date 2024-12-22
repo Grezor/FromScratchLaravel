@@ -20,6 +20,29 @@ build: stop
 build\:no-cache: stop
 	@docker compose build --pull --no-cache
 
+clear-cache:
+	@echo "clear-cache start"
+	@bin/artisan cache:clear      
+	@bin/artisan config:clear     
+	@bin/artisan route:clear      
+	@bin/artisan view:clear       
+	@bin/artisan event:clear      
+	@echo "✅ clear-cache terminée"
+
+optimize-project:
+	@echo "start"
+	@bin/artisan config:cache     
+	@bin/artisan route:cache     
+	@bin/artisan view:cache       
+	@bin/artisan event:cache      
+	@bin/artisan optimize         
+	@bin/artisan queue:restart   
+	@echo "✅ terminée !"
+
+restart-and-clear:
+	@make clear-cache
+	@make optimize-project
+
 
 db: start
 	@sleep 1s
