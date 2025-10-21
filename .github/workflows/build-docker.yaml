@@ -21,4 +21,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.actor }}/fromscratchlaravel:latest
+          tags: ghcr.io/grezor/fromscratchlaravel:latest
