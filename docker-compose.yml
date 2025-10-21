@@ -1,7 +1,8 @@
 services:
   php:
-    image: lara-php:latest
+    image: lara-php:8.4
     container_name: laraphp
+    restart: always
     build:
       context: ./docker/php
     volumes:
@@ -9,14 +10,14 @@ services:
     networks:
       - app_network
     ports:
-      - "9000:80"
+      - "8000:80"
 
   db:
-    image: lara-mysql:latest
+    image: lara-mysql:9.4
     container_name: laradb
+    restart: always
     build:
       context: ./docker/mysql
-    command: --mysql-native-password=ON
     environment:
       MYSQL_ROOT_PASSWORD: noPassword
     volumes:
@@ -28,7 +29,7 @@ services:
 
   phpmyadmin:
     platform: linux/arm64/v8
-    image: phpmyadmin:latest
+    image: phpmyadmin:5.2
     container_name: larapma
     restart: always
     depends_on:
@@ -41,7 +42,21 @@ services:
       - "8080:80"
     networks:
       - app_network
-  
+
+  mailpit:
+    image: axllent/mailpit
+    container_name: lara-mailpit
+    restart: unless-stopped
+    volumes:
+      - ./data:/data
+    ports:
+      - 8025:8025
+      - 1025:1025
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
 
 volumes:
   db-data:

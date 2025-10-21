@@ -22,21 +22,21 @@ build\:no-cache: stop
 
 clear-cache:
 	@echo "clear-cache start"
-	@bin/artisan cache:clear      
-	@bin/artisan config:clear     
-	@bin/artisan route:clear      
-	@bin/artisan view:clear       
-	@bin/artisan event:clear      
+	@bin/artisan cache:clear
+	@bin/artisan config:clear
+	@bin/artisan route:clear
+	@bin/artisan view:clear
+	@bin/artisan event:clear
 	@echo "✅ clear-cache terminée"
 
 optimize-project:
 	@echo "start"
-	@bin/artisan config:cache     
-	@bin/artisan route:cache     
-	@bin/artisan view:cache       
-	@bin/artisan event:cache      
-	@bin/artisan optimize         
-	@bin/artisan queue:restart   
+	@bin/artisan config:cache
+	@bin/artisan route:cache
+	@bin/artisan view:cache
+	@bin/artisan event:cache
+	@bin/artisan optimize
+	@bin/artisan queue:restart
 	@echo "✅ terminée !"
 
 restart-and-clear:
@@ -66,26 +66,75 @@ rights: start
 	@sudo chmod -R 777 storage
 	@sudo chmod -R 777 bootstrap/cache
 	@sudo chown -R ${CURRENT_UID}:${CURRENT_GID} ./
+
+tinker:
+	@bin/artisan tinker
+
+queue-work:
+	@bin/artisan queue:work
+
+queue-failed:
+	@bin/artisan queue:failed
+
+queue-retry:
+	@bin/artisan queue:retry all
+
+migrate-fresh:
+	@bin/artisan migrate:fresh --seed
+
+storage-link:
+	@bin/artisan storage:link
+
+key-generate:
+	@bin/artisan key:generate
+
+new-controller-%:
+	@php artisan make:controller $*
+
+
+make-model:
+	@bin/artisan make:model Example -m
+
+make-seeder:
+	@bin/artisan make:seeder ExampleSeeder
+
+route-list:
+	@bin/artisan route:list
+
+event-list:
+	@bin/artisan event:list
+
+schedule-run:
+	@bin/artisan schedule:run
+
+schedule-list:
+	@bin/artisan schedule:list
+
+check-env:
+	@bin/artisan env
+
 # -- End Environment
 
-# -- Start Code linter & test (CI)
-test: db\:test test\:unit test\:feature
+# -- Start Frontend
 
-test\:unit:
-	@bin/php vendor/bin/phpunit tests/Unit
+npmdev:
+	@npm run dev
 
-test\:feature:
-	@bin/php vendor/bin/phpunit tests/Feature
+npmbuild:
+	@npm run build
 
-lint:
-	@bin/php vendor/bin/pint -v
-	@bin/php vendor/bin/phpstan analyse
-	@bin/php vendor/bin/rector process --xdebug
-#	@bin/php ./vendor/bin/psalm
-#	@bin/php vendor/bin/phpcpd src
-#	@npm run lint
-	@make rights
+# -- End Frontend
 
-ci: lint test
-	@make rights
-# -- End Code linter & test (CI)
+# -- Maintenance
+
+composer-update:
+	@composer update
+
+composer-dump:
+	@composer dump-autoload -o
+
+log-clear:
+	@truncate -s 0 storage/logs/laravel.log
+	@echo "✅ log-clear terminée"
+
+# -- End Maintenance

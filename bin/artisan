@@ -4,4 +4,4 @@
 docker run -i --rm  \
 	-v "$(pwd):/var/www/html/" \
 	--network=fromscratchlaravel_app_network \
-	lara-php:latest php artisan $@
+	lara-php:8.4 php artisan $@
